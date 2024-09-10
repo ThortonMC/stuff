@@ -4,24 +4,20 @@ public class CryptoManager {
 
         String test = "HELLO";
         int key1 = 105;
-//        System.out.println(isStringInBounds(test));
-//        System.out.println(caesarEncryption(test, key1));
-//        String test2 = "1.558";
-//        System.out.println(caesarDecryption(test2, key1));
 
-        //assertEquals("WU\\VR9F#N!RF88U-'HED",
-
-        String testd = "TESTING";
+        String testd = "HELLO 12DE- 3EWQZX";
         String testd2 = "CIPHER_IS_LONGER_THAN_THE_PLAIN_TEXT";
 
-        System.out.println(bellasoEncryption(testd, testd2));
+        //System.out.println(bellasoEncryption(testd, testd2));
+
+        String testd3 = ";,:;05.G(56;/,9G:;905.";
+        System.out.println(caesarDecryption(testd3, 999 ));
 
 
-
+        //System.out.println(bellasoDecryption(testd3, testd2));
 
 
     }
-
     public static boolean isStringInBounds(String plainText) {
 
         int flag = 0;
@@ -42,12 +38,15 @@ public class CryptoManager {
 
     public static String caesarEncryption(String plainText, int key) {
 
+        if(isStringInBounds(plainText) == false){
+
+            return "The selected string is not in bounds, Try again.";
+        }
         while (key > 95) {
 
             key -= (95 - 32 + 1);
 
         }
-
         String newString;
         String eString = "";
         char origChar;
@@ -103,14 +102,15 @@ public class CryptoManager {
 
             origChar = encryptedText.charAt(i);
 
-            if (flag == 1 || origChar - key < 32) {
+            if (flag == 1 && origChar - key2 < 32) {
 
                 x = origChar - 31;
                 y = x + 95;
                 z = y - key2;
                 newChar = (char) z;
-            } else {
-                newChar = (char) (origChar - key);
+            }
+            else {
+                newChar = (char) (origChar - key2);
             }
             newString = String.valueOf(newChar);
             dString = dString.concat(newString);
@@ -120,7 +120,6 @@ public class CryptoManager {
 
     public static String bellasoEncryption(String plainText, String bellasoStr) {
 
-
         int plainTextLen = plainText.length();
         int bellasoStrLen = bellasoStr.length();
 
@@ -129,20 +128,19 @@ public class CryptoManager {
         char newChar;
         String eString = "";
         int tempChar = 0;
-
         String shortBellasoStr = "";
 
         if (plainTextLen < bellasoStrLen) {
 
             shortBellasoStr = bellasoStr.substring(0, plainTextLen);
-            System.out.println(shortBellasoStr);
+
 
             for (int i = 0; i < shortBellasoStr.length(); i++) {
 
                 origChar = plainText.charAt(i);
                 bellaChar = bellasoStr.charAt(i);
 
-                System.out.println(origChar + ", " + bellaChar);
+
                 tempChar = origChar + bellaChar;
 
                 if (tempChar > 95) {
@@ -162,7 +160,7 @@ public class CryptoManager {
                 origChar = plainText.charAt(i);
                 bellaChar = bellasoStr.charAt(i);
 
-                System.out.println(origChar + ", " + bellaChar);
+
                 tempChar = origChar + bellaChar;
 
                 if (tempChar > 95) {
@@ -203,7 +201,6 @@ public class CryptoManager {
         }
         return eString;
     }
-
     public static String bellasoDecryption(String encryptedText, String bellasoStr) {
 
         int encryptedTextLen = encryptedText.length();
@@ -216,25 +213,32 @@ public class CryptoManager {
         int tempChar = 0;
         String shortBellasoStr = "";
 
-
         if (encryptedTextLen < bellasoStrLen) {
 
             shortBellasoStr = bellasoStr.substring(0, encryptedTextLen);
-            System.out.println(shortBellasoStr);
 
             for (int i = 0; i < shortBellasoStr.length(); i++) {
 
                 origChar = encryptedText.charAt(i);
                 bellaChar = bellasoStr.charAt(i);
 
-                if (bellaChar - origChar > 31) {
+                if (bellaChar - origChar > 31 && origChar - 64 > 0 || bellaChar - origChar == 32) {
 
                     newChar = (char) (bellaChar - origChar);
-                } else {
+                }
+                else if(bellaChar - origChar > 31 && origChar - 64 < 0){     // this is to check if the original unencrypted text plus the character to cipher it , when added together if subtracting 64 it would still be greater than 95, so in order to decrypt it would need to subtract 64 another time.
 
-                    tempChar = origChar + 64;
-                    tempChar = tempChar - bellaChar;
+
+                   newChar = (char) ((origChar + 64 + 64) - bellaChar);
+
+               }
+                else {
+
+                    tempChar = (origChar + 64) - bellaChar;
                     newChar = (char) (tempChar);
+                    if(newChar == 96)
+                        newChar = 32;
+
                 }
                 dString = dString.concat(String.valueOf(newChar));
             }
@@ -246,14 +250,23 @@ public class CryptoManager {
                 origChar = encryptedText.charAt(i);
                 bellaChar = bellasoStr.charAt(i);
 
-                if (bellaChar - origChar > 31) {
+                if (bellaChar - origChar > 31 && origChar - 64 > 0 || bellaChar - origChar == 32) {
 
                     newChar = (char) (bellaChar - origChar);
-                } else {
+                }
+                else if(bellaChar - origChar > 31 && origChar - 64 < 0){     // this is to check if the original unencrypted text plus the character to cipher it , when added together if subtracting 64 it would still be greater than 95, so in order to decrypt it would need to subtract 64 another time.
 
-                    tempChar = origChar + 64;
-                    tempChar = tempChar - bellaChar;
+                    newChar = (char) ((origChar + 64 + 64) - bellaChar);
+
+                }
+                else {
+
+                    tempChar = (origChar + 64) - bellaChar;
                     newChar = (char) (tempChar);
+                    if(newChar == 96)
+                        newChar = 32;
+
+
                 }
                 dString = dString.concat(String.valueOf(newChar));
 
@@ -269,119 +282,30 @@ public class CryptoManager {
                     bellaChar = bellasoStr.charAt(x);
                     origChar = encryptedText.charAt(i);
 
-                    if (bellaChar - origChar > 31) {
+                    if (bellaChar - origChar > 31 && origChar - 64 > 0 || bellaChar - origChar == 32){
 
                         newChar = (char) (bellaChar - origChar);
-                    } else {
+                    }
+                    else if(bellaChar - origChar > 31 && origChar - 64 < 0){     // this is to check if the original unencrypted text plus the character to cipher it , when added together if subtracting 64 it would still be greater than 95, so in order to decrypt it would need to subtract 64 another time.
 
-                        tempChar = origChar + 64;
-                        tempChar = tempChar - bellaChar;
+
+                        newChar = (char) ((origChar + 64 + 64) - bellaChar);
+
+                    }
+                    else {
+
+                        tempChar = (origChar + 64) - bellaChar;
                         newChar = (char) (tempChar);
+                        if(newChar == 96)
+                            newChar = 32;
                     }
                     dString = dString.concat(String.valueOf(newChar));
                 }
             }
-
         }
         return dString;
-
     }
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//        char bellasoChar;
-//        String newBellaso = bellasoStr;
-//        String bellasoDifference = null;
-//
-//        int plainTextLength = plainText.length();
-//        int bellasoStrLength = bellasoStr.length();
-//        int diffCounter = 0;
-//        int difference = 0;
-//
-//        if(plainTextLength < bellasoStrLength) {
-//
-//            newBellaso = bellasoStr.substring(0, plainText.length());
-//        }
-//        else if(plainTextLength > bellasoStrLength {
-//
-//            difference = plainTextLength - bellasoStrLength;
-//            diffCounter = difference;
-//
-//            while (diffCounter > bellasoStrLength) {
-//
-//                newBellaso += bellasoStr;
-//                diffCounter -= difference;
-//            }
-//            if (diffCounter == 1) {
-//
-//                bellasoDifference = bellasoStr.substring(0, 0);
-//                newBellaso += bellasoDifference;
-//            } else if (diffCounter > 1) {
-//
-//                bellasoDifference = bellasoStr.substring(0, diffCounter - 1);
-//                newBellaso += bellasoDifference;
-//            }
-//        }
-//
-//
-//
-//
-//
-//        }
-//
-//
-//
-//
-//
-
-//        return "";
-//    }
-//
-//        for(int i = 0; i < plainText.length(); i ++){
-//
-//            bellasoChar =
-//
-//
-//        }
-//
-//
-//        return "";
-//
-//    }
-//
-//    public static String bellasoDecryption(String encryptedText, String bellasoStr) {
-//
-//        return "";
-//    }
-//}
-
 
