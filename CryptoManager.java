@@ -1,30 +1,36 @@
+
+/**
+ * This is a utility class that encrypts and decrypts a phrase using two
+ * different approaches. The first approach is called the Caesar Cipher and is a
+ * simple �substitution cipher� where characters in a message are replaced by a
+ * substitute character. The second approach, due to Giovan Battista Bellaso,
+ * uses a key word, where each character in the word specifies the offset for
+ * the corresponding character in the message, with the key word wrapping around
+ * as needed.
+ * 
+ * @author Taylor Horton
+ * @version 09/10/24
+ */
 public class CryptoManager {
 
-    public static void main(String[] args) {
+	
+	private static final char LOWER_RANGE = 32;
+	private static final char UPPER_RANGE = 95;
+	private static final int RANGE = UPPER_RANGE - LOWER_RANGE + 1;
 
-        String test = "HELLO";
-        int key1 = 105;
-
-        String testd = "HELLO 12DE- 3EWQZX";
-        String testd2 = "CIPHER_IS_LONGER_THAN_THE_PLAIN_TEXT";
-
-        //System.out.println(bellasoEncryption(testd, testd2));
-
-        String testd3 = ";,:;05.G(56;/,9G:;905.";
-        System.out.println(caesarDecryption(testd3, 999 ));
-
-
-        //System.out.println(bellasoDecryption(testd3, testd2));
-
-
-    }
-    public static boolean isStringInBounds(String plainText) {
-
+	/**
+	 * This method determines if a string is within the allowable bounds of ASCII codes 
+	 * according to the LOWER_RANGE and UPPER_RANGE characters
+	 * @param plainText a string to be encrypted, if it is within the allowable bounds
+	 * @return true if all characters are within the allowable bounds, false if any character is outside
+	 */
+    public static boolean isStringInBounds(String plainText) { 
+    	
         int flag = 0;
 
         for (int i = 0; i < plainText.length(); i++) {
 
-            if (plainText.charAt(i) < 32 || plainText.charAt(i) > 95) {
+            if (plainText.charAt(i) < LOWER_RANGE || plainText.charAt(i) > UPPER_RANGE) {
                 flag = 1;
                 break;
             }
@@ -34,6 +40,7 @@ public class CryptoManager {
         else {
             return true;
         }
+      
     }
 
     public static String caesarEncryption(String plainText, int key) {
@@ -95,7 +102,7 @@ public class CryptoManager {
         int x = 0;
         int y = 0;
         int z = 0;
-
+     
         String newString;
         String dString = "";
         for (int i = 0; i < encryptedText.length(); i++) {
@@ -108,6 +115,14 @@ public class CryptoManager {
                 y = x + 95;
                 z = y - key2;
                 newChar = (char) z;
+            }
+            else if(origChar - key2 <32) {
+            	
+                x = origChar - 31;
+                y = x + 95;
+                z = y - key2;
+                newChar = (char) z;
+            		
             }
             else {
                 newChar = (char) (origChar - key2);
@@ -139,7 +154,6 @@ public class CryptoManager {
 
                 origChar = plainText.charAt(i);
                 bellaChar = bellasoStr.charAt(i);
-
 
                 tempChar = origChar + bellaChar;
 
@@ -305,7 +319,5 @@ public class CryptoManager {
         }
         return dString;
     }
-
-
 }
 
