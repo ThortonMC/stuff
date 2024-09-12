@@ -158,21 +158,18 @@ public class CryptoManager {
 
             shortBellasoStr = bellasoStr.substring(0, plainTextLen);
 
-
             for (int i = 0; i < shortBellasoStr.length(); i++) {
 
                 origChar = plainText.charAt(i);
                 bellaChar = bellasoStr.charAt(i);
 
                 tempChar = origChar + bellaChar;
+              
+                while(tempChar > 95) {
 
-                if (tempChar > 95) {
-
-                    while (tempChar > 95) {
-
-                        tempChar -= 64;
-                    }
+                	tempChar -= 64;
                 }
+             
                 newChar = (char) tempChar;
                 eString = eString.concat(String.valueOf(newChar));
             }
@@ -186,12 +183,9 @@ public class CryptoManager {
 
                 tempChar = origChar + bellaChar;
 
-                if (tempChar > 95) {
+                while(tempChar > 95) {
 
-                    while (tempChar > 95) {
-
-                        tempChar -= 64;
-                    }
+                	tempChar -= 64;
                 }
                 newChar = (char) tempChar;
                 eString = eString.concat(String.valueOf(newChar));
@@ -210,12 +204,9 @@ public class CryptoManager {
 
                     tempChar = origChar + bellaChar;
 
-                    if (tempChar > 95) {
+                    while(tempChar > 95) {
 
-                        while (tempChar > 95) {
-
-                            tempChar -= 64;
-                        }
+                    	tempChar -= 64;
                     }
                     newChar = (char) tempChar;
                     eString = eString.concat(String.valueOf(newChar));
