@@ -1,3 +1,4 @@
+
 /**
  * This is a utility class that encrypts and decrypts a phrase using two
  * different approaches. The first approach is called the Caesar Cipher and is a
@@ -115,33 +116,18 @@ public class CryptoManager {
         char newChar;
 
         int x = 0;
-        int y = 0;
-        int z = 0;
-     
+
         String newString;
         String dString = "";
         for (int i = 0; i < encryptedText.length(); i++) {
 
             origChar = encryptedText.charAt(i);
+            x = origChar - key2;
 
-            if (flag == 1 && origChar - key2 < 32) {
-
-                x = origChar - 31;
-                y = x + 95;
-                z = y - key2;
-                newChar = (char) z;
+            if (x < 32) {
+                x += 64;
             }
-            else if(origChar - key2 <32) {
-            	
-                x = origChar - 31;
-                y = x + 95;
-                z = y - key2;
-                newChar = (char) z;
-            		
-            }
-            else {
-                newChar = (char) (origChar - key2);
-            }
+            newChar = (char) x;
             newString = String.valueOf(newChar);
             dString = dString.concat(newString);
         }
@@ -158,9 +144,9 @@ public class CryptoManager {
 	 */
     public static String bellasoEncryption(String plainText, String bellasoStr) {
 
+    	
         int plainTextLen = plainText.length();
         int bellasoStrLen = bellasoStr.length();
-
         char origChar;
         char bellaChar;
         char newChar;
@@ -249,14 +235,17 @@ public class CryptoManager {
 	 */
     public static String bellasoDecryption(String encryptedText, String bellasoStr) {
 
+        
+        
         int encryptedTextLen = encryptedText.length();
         int bellasoStrLen = bellasoStr.length();
 
         char origChar;
         char bellaChar;
         char newChar;
+        int tempChar;
+        
         String dString = "";
-        int tempChar = 0;
         String shortBellasoStr = "";
 
         if (encryptedTextLen < bellasoStrLen) {						// checks if the Cipher key is longer than the text to be decrypted
@@ -267,25 +256,14 @@ public class CryptoManager {
 
                 origChar = encryptedText.charAt(i);
                 bellaChar = bellasoStr.charAt(i);
-
-                if (bellaChar - origChar > 31 && origChar - 64 > 0 || bellaChar - origChar == 32) {
-
-                    newChar = (char) (bellaChar - origChar);
+                
+                tempChar = origChar - bellaChar;
+                
+                while(tempChar < 32) {
+                    tempChar += 64;
                 }
-                else if(bellaChar - origChar > 31 && origChar - 64 < 0){     // this is to check if the original unencrypted text plus the character to cipher it , when added together if subtracting 64 it would still be greater than 95, so in order to decrypt it would need to subtract 64 another time.
-
-
-                   newChar = (char) ((origChar + 64 + 64) - bellaChar);
-
-               }
-                else {
-
-                    tempChar = (origChar + 64) - bellaChar;
-                    newChar = (char) (tempChar);
-                    if(newChar == 96)
-                        newChar = 32;
-
-                }
+                
+                newChar = (char)tempChar;
                 dString = dString.concat(String.valueOf(newChar));
             }
 
@@ -296,55 +274,35 @@ public class CryptoManager {
                 origChar = encryptedText.charAt(i);
                 bellaChar = bellasoStr.charAt(i);
 
-                if (bellaChar - origChar > 31 && origChar - 64 > 0 || bellaChar - origChar == 32) {
-
-                    newChar = (char) (bellaChar - origChar);
+                tempChar = origChar - bellaChar;
+                
+                while(tempChar < 32) {
+                	tempChar += 64;
                 }
-                else if(bellaChar - origChar > 31 && origChar - 64 < 0){     // this is to check if the original unencrypted text plus the character to cipher it , when added together if subtracting 64 it would still be greater than 95, so in order to decrypt it would need to subtract 64 another time.
-
-                    newChar = (char) ((origChar + 64 + 64) - bellaChar);
-
-                }
-                else {
-
-                    tempChar = (origChar + 64) - bellaChar;
-                    newChar = (char) (tempChar);
-                    if(newChar == 96)
-                        newChar = 32;
-
-
-                }
+                
+                newChar = (char)tempChar;
                 dString = dString.concat(String.valueOf(newChar));
+                
 
             }
-            int x = 0;
+            int z = 0;
 
             if (encryptedTextLen > bellasoStrLen) {                        // additional if statement after iterating through length of cipher key length, if the text to be encrypted is longer than the cipher key there is more to be decrypted.
 
                 for (int i = bellasoStrLen; i < encryptedTextLen; i++) {        // loop starts at the end of the cipher key length till the end of the text to be decrypted length, this will iterate the only remaining characters that exceed the length of the cipher key length.
 
-                    x = i % bellasoStrLen;		// to match the remaining characters exceeding the cipher key length, modulus the index by the cipher key length , that way the character that exceeds the cipher key length will match the start of the cipher again with the remainder value
+                    z = i % bellasoStrLen;		// to match the remaining characters exceeding the cipher key length, modulus the index by the cipher key length , that way the character that exceeds the cipher key length will match the start of the cipher again with the remainder value
 
-                    bellaChar = bellasoStr.charAt(x);
+                    bellaChar = bellasoStr.charAt(z);
                     origChar = encryptedText.charAt(i);
 
-                    if (bellaChar - origChar > 31 && origChar - 64 > 0 || bellaChar - origChar == 32){
+                    tempChar = origChar - bellaChar;
 
-                        newChar = (char) (bellaChar - origChar);
+                    while(tempChar < 32) {
+                    	tempChar += 64;
                     }
-                    else if(bellaChar - origChar > 31 && origChar - 64 < 0){     // this is to check if the original unencrypted text plus the character to cipher it , when added together if subtracting 64 it would still be greater than 95, so in order to decrypt it would need to subtract 64 another time.
-
-
-                        newChar = (char) ((origChar + 64 + 64) - bellaChar);
-
-                    }
-                    else {
-
-                        tempChar = (origChar + 64) - bellaChar;
-                        newChar = (char) (tempChar);
-                        if(newChar == 96)
-                            newChar = 32;
-                    }
+                    
+                    newChar = (char)tempChar;
                     dString = dString.concat(String.valueOf(newChar));
                 }
             }
@@ -352,3 +310,4 @@ public class CryptoManager {
         return dString;
     }
 }
+
