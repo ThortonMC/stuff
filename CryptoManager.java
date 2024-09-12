@@ -1,4 +1,3 @@
-
 /**
  * This is a utility class that encrypts and decrypts a phrase using two
  * different approaches. The first approach is called the Caesar Cipher and is a
@@ -42,7 +41,14 @@ public class CryptoManager {
         }
       
     }
-
+    
+	/**
+	 * Encrypts a string according to the Caesar Cipher.  The integer key specifies an offset
+	 * and each character in plainText is replaced by the character \"offset\" away from it 
+	 * @param plainText an uppercase string to be encrypted.
+	 * @param key an integer that specifies the offset of each character
+	 * @return the encrypted string
+	 */
     public static String caesarEncryption(String plainText, int key) {
 
         if(isStringInBounds(plainText) == false){
@@ -54,6 +60,7 @@ public class CryptoManager {
             key -= (95 - 32 + 1);
 
         }
+        
         String newString;
         String eString = "";
         char origChar;
@@ -82,7 +89,15 @@ public class CryptoManager {
         }
         return eString;
     }
-
+    
+	/**
+	 * Decrypts a string according to the Caesar Cipher.  The integer key specifies an offset
+	 * and each character in encryptedText is replaced by the character \"offset\" characters before it.
+	 * This is the inverse of the encryptCaesar method.
+	 * @param encryptedText an encrypted string to be decrypted.
+	 * @param key an integer that specifies the offset of each character
+	 * @return the plain text string
+	 */
     public static String caesarDecryption(String encryptedText, int key) {
 
         int flag = 0;
@@ -132,7 +147,15 @@ public class CryptoManager {
         }
         return dString;
     }
-
+    
+	/**
+	 * Encrypts a string according the Bellaso Cipher.  Each character in plainText is offset 
+	 * according to the ASCII value of the corresponding character in bellasoStr, which is repeated
+	 * to correspond to the length of plainText
+	 * @param plainText an uppercase string to be encrypted.
+	 * @param bellasoStr an uppercase string that specifies the offsets, character by character.
+	 * @return the encrypted string
+	 */
     public static String bellasoEncryption(String plainText, String bellasoStr) {
 
         int plainTextLen = plainText.length();
@@ -215,6 +238,15 @@ public class CryptoManager {
         }
         return eString;
     }
+    
+	/**
+	 * Decrypts a string according the Bellaso Cipher.  Each character in encryptedText is replaced by
+	 * the character corresponding to the character in bellasoStr, which is repeated
+	 * to correspond to the length of plainText.  This is the inverse of the encryptBellaso method.
+	 * @param encryptedText an uppercase string to be encrypted.
+	 * @param bellasoStr an uppercase string that specifies the offsets, character by character.
+	 * @return the decrypted string
+	 */
     public static String bellasoDecryption(String encryptedText, String bellasoStr) {
 
         int encryptedTextLen = encryptedText.length();
@@ -227,11 +259,11 @@ public class CryptoManager {
         int tempChar = 0;
         String shortBellasoStr = "";
 
-        if (encryptedTextLen < bellasoStrLen) {
+        if (encryptedTextLen < bellasoStrLen) {						// checks if the Cipher key is longer than the text to be decrypted
 
             shortBellasoStr = bellasoStr.substring(0, encryptedTextLen);
 
-            for (int i = 0; i < shortBellasoStr.length(); i++) {
+            for (int i = 0; i < shortBellasoStr.length(); i++) {				// iterates through the length of the cipher key shortened to length of the text
 
                 origChar = encryptedText.charAt(i);
                 bellaChar = bellasoStr.charAt(i);
@@ -257,7 +289,7 @@ public class CryptoManager {
                 dString = dString.concat(String.valueOf(newChar));
             }
 
-        } else {
+        } else {												// if the cipher key is not shorter than the text to be encrypted, than iterate through the length of the cipher key 
 
             for (int i = 0; i < bellasoStrLen; i++) {
 
@@ -287,11 +319,11 @@ public class CryptoManager {
             }
             int x = 0;
 
-            if (encryptedTextLen > bellasoStrLen) {
+            if (encryptedTextLen > bellasoStrLen) {                        // additional if statement after iterating through length of cipher key length, if the text to be encrypted is longer than the cipher key there is more to be decrypted.
 
-                for (int i = bellasoStrLen; i < encryptedTextLen; i++) {
+                for (int i = bellasoStrLen; i < encryptedTextLen; i++) {        // loop starts at the end of the cipher key length till the end of the text to be decrypted length, this will iterate the only remaining characters that exceed the length of the cipher key length.
 
-                    x = i % bellasoStrLen;
+                    x = i % bellasoStrLen;		// to match the remaining characters exceeding the cipher key length, modulus the index by the cipher key length , that way the character that exceeds the cipher key length will match the start of the cipher again with the remainder value
 
                     bellaChar = bellasoStr.charAt(x);
                     origChar = encryptedText.charAt(i);
@@ -320,4 +352,3 @@ public class CryptoManager {
         return dString;
     }
 }
-
